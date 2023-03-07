@@ -34,6 +34,7 @@ class _HomeState extends State<_Home> {
     //double _currentSliderValue = 20;
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.black,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50.0), // here the desired height
           child: AppBar(
@@ -109,11 +110,17 @@ class _HomeState extends State<_Home> {
                     return entry(height: 60, width: width, id: index);
                   },
                 )),
-            Container(
+           GestureDetector(
+            onTap: (){},
+            child: Container(
+              decoration: BoxDecoration(
+                 color: Color.fromARGB(255, 255, 0, 0),
+                 borderRadius: BorderRadius.all(Radius.circular(20))
+              ),
               width: width,
               height: 70,
-              color: Color.fromARGB(255, 255, 0, 0),
-            )
+              child: Center(child: Text("GRAPH IT!")),
+            ))
           ]),
         ),
       ),
@@ -165,14 +172,3 @@ class entry extends StatelessWidget {
   }
 }
 
-Widget popup() {
-  return AlertDialog(
-    actions: [
-      Container(
-        width: 100,
-        height: 100,
-        color: Color.fromARGB(255, 255, 0, 0),
-      )
-    ],
-  );
-}
