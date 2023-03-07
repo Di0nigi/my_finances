@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:my_finances/graph.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 void main() => runApp(new Myapp());
 
@@ -40,37 +42,51 @@ class _HomeState extends State<_Home> {
             actions: [
               GestureDetector(
                   onTap: () => showDialog<String>(
-        context: context,                
-                    builder:(BuildContext context) => AlertDialog(
-                          title: const Text('New Entry'),
-                          actions: <Widget>[
-                            Center(child:Container(width: 700,height: 500,
-                            color: Color.fromARGB(0, 255, 255, 255),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
-                              child: TextField(
-                                decoration: InputDecoration(
-                                      labelText: 'Transaction Value',
-  ),),),
-                              Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
-                              child: TextField(
-                                decoration: InputDecoration(
-                                      labelText: 'Type of transaction',
-  )
-                              ),),
-                              GestureDetector(child: Container(
-                                decoration: BoxDecoration(color: Color.fromARGB(255, 43, 161, 0),borderRadius: BorderRadius.all(Radius.circular(20))),
-                                width: 80,
-                                height: 60,
-                                child: Center(child:Text("Enter")),
-                              ),)
-                              ]
-                            ),
-                            ))
-                            
-                          ])),
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                              title: const Text('New Entry'),
+                              actions: <Widget>[
+                                Center(
+                                    child: Container(
+                                  width: 700,
+                                  height: 500,
+                                  color: Color.fromARGB(0, 255, 255, 255),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsets.fromLTRB(0, 0, 0, 100),
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              labelText: 'Transaction Value',
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              EdgeInsets.fromLTRB(0, 0, 0, 100),
+                                          child: TextField(
+                                              decoration: InputDecoration(
+                                            labelText: 'Type of transaction',
+                                          )),
+                                        ),
+                                        GestureDetector(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                color: Color.fromARGB(
+                                                    255, 43, 161, 0),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20))),
+                                            width: 80,
+                                            height: 60,
+                                            child: Center(child: Text("Enter")),
+                                          ),
+                                        )
+                                      ]),
+                                ))
+                              ])),
                   child: Container(
                     height: 0,
                     width: 50,
@@ -95,17 +111,18 @@ class _HomeState extends State<_Home> {
                     return entry(height: 60, width: width, id: index);
                   },
                 )),
-           GestureDetector(
-            onTap: (){},
-            child: Container(
-              decoration: BoxDecoration(
-                 color: Color.fromARGB(255, 255, 0, 0),
-                 borderRadius: BorderRadius.all(Radius.circular(20))
-              ),
-              width: width,
-              height: 70,
-              child: Center(child: Text("GRAPH IT!")),
-            ))
+            GestureDetector(
+                onTap: () {
+                  graphit(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 255, 0, 0),
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  width: width,
+                  height: 70,
+                  child: Center(child: Text("GRAPH IT!")),
+                ))
           ]),
         ),
       ),
@@ -140,7 +157,6 @@ class entry extends StatelessWidget {
                 color: Color.fromARGB(255, 255, 255, 255),
                 borderRadius: BorderRadius.all(Radius.circular(15))),
             //padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
-
             height: height,
             width: width,
             child: Center(
@@ -157,3 +173,25 @@ class entry extends StatelessWidget {
   }
 }
 
+void graphit(context) {
+  List<FlSpot> dataList = [
+    FlSpot(0, 4),
+    FlSpot(1, 3.5),
+    FlSpot(2, 4.5),
+    FlSpot(3, 1),
+    FlSpot(4, 4),
+    FlSpot(5, 6),
+    FlSpot(6, 6.5),
+    FlSpot(7, 6),
+    FlSpot(8, 4),
+    FlSpot(9, 6),
+    FlSpot(10, 6),
+    FlSpot(11, 7),
+  ];
+
+  Widget graphPage = Graph(data: dataList);
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => graphPage),
+  );
+}
