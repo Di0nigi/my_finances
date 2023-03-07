@@ -1,10 +1,10 @@
-import 'package:sqflite/sqflite.dart';
-import 'dart:async';
+import 'package:my_finances/main.dart';
+import 'package:sqflite/sqflite.dart' as sql;
+import 'dart:async' as asy;
 import 'dart:math';
+//import 'package:async/async.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
-
-late Future<Database> database;
 
 class Purchase {
   Random random = new Random();
@@ -15,7 +15,6 @@ class Purchase {
   Purchase(this.amount, this.purchase, [this.purchasetype, this.id]) {
     id ??= random.nextInt(100000);
     purchasetype ??= "potato";
-    createTable();
     initializeinDatabase(this);
   }
   @override
@@ -32,29 +31,17 @@ class Purchase {
     };
   }
 
-  Future<void> initializeinDatabase(Purchase newpurchase) async {
+  asy.Future<void> initializeinDatabase(Purchase newpurchase) async {
     final db = await database;
     await db!.insert(
       'Purchases',
       newpurchase.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
-
-  Future<void> createTable() async {
-    database = openDatabase(
-      join(await getDatabasesPath(), 'purchasedatabase.db'),
-      onCreate: (database, version) {
-        return database.execute(
-          'CREATE TABLE Purchases(id INTEGER PRIMARY KEY, purchase TEXT, purchasetype TEXT, amount INTEGER)',
-        );
-      },
-      version: 1,
+      conflictAlgorithm: sql.ConflictAlgorithm.replace,
     );
   }
 }
 
-Future<List<Purchase>> getallPurchases() async {
+asy.Future<List<Purchase>> getallPurchases() async {
   final db = await database;
   assert(db != null);
   final List<Map<String, dynamic>> maps = await db!.query('Purchases');
@@ -62,4 +49,17 @@ Future<List<Purchase>> getallPurchases() async {
     return Purchase(maps[i]['amount'], maps[i]['purchase'],
         maps[i]['purchasetype'], maps[i]['id']);
   });
+}
+
+Future<sql.Database>? createTable() async {
+  sql.Database database = await sql.openDatabase(
+    join(await sql.getDatabasesPath(), 'purchasedatabase.db'),
+    onCreate: (database, version) {
+      return database.execute(
+        'CREATE TABLE Purchases(id INTEGER PRIMARY KEY, purchase TEXT, purchasetype TEXT, amount INTEGER)',
+      );
+    },
+    version: 1,
+  );
+  return database;
 }

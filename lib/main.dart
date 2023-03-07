@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:sqflite/sqflite.dart';
 import 'persistentstorage.dart';
 import 'package:my_finances/graph.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-void main() => runApp(new Myapp());
+Future<Database>? database;
+void main() {
+  //database = createTable();
+  //Purchase dummy_one = Purchase(100, "dummy_one");
+  runApp(new Myapp());
+}
 
 class Myapp extends StatefulWidget {
   const Myapp({super.key});
@@ -30,6 +36,8 @@ int entry_count = 0;
 List<entry> entry_list = [entry(height: 0, width: 0, id: 0)];
 
 class _HomeState extends State<_Home> {
+  var atabase = createTable();
+  Purchase dummy_one = Purchase(100, "dummy_one");
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -211,7 +219,7 @@ void graphit(context) {
 
 Future<void> updateview() async {
   List<Purchase> liste = await getallPurchases();
-  entry_count = liste.length+1;
+  entry_count = liste.length;
   for (int i = 0; i >= entry_count; i++) {
     var f = entry(
       height: 60,
