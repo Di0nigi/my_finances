@@ -27,7 +27,7 @@ class _Home extends StatefulWidget {
 }
 
 int entry_count = 0;
-List<entry> entry_list = [];
+List<entry> entry_list = [entry(height: 0, width: 0, id: 0)];
 
 class _HomeState extends State<_Home> {
   @override
@@ -209,9 +209,9 @@ void graphit(context) {
   );
 }
 
-void updateview() async {
+Future<void> updateview() async {
   List<Purchase> liste = await getallPurchases();
-  entry_count = liste.length;
+  entry_count = liste.length+1;
   for (int i = 0; i >= entry_count; i++) {
     var f = entry(
       height: 60,
@@ -222,6 +222,6 @@ void updateview() async {
   }
 }
 
-void updateDatabase(int n, String s1, String s2) async {
-  Purchase(n, s1, s2);
+Future<void> updateDatabase(int n, String s1, String s2) async {
+  await Purchase(n, s1, s2);
 }
