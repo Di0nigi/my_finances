@@ -4,18 +4,16 @@ import 'dart:math';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 
+Future<Database>? database;
 class Purchase {
   Random random = new Random();
-  Future<Database>? database;
   int? id;
   final int amount;
   final String purchase;
   final String purchasetype;
   Purchase(this.amount, this.purchase, this.purchasetype, [this.id]) {
     id ??= random.nextInt(100000);
-    if (database == null) {
       createTable();
-    }
     initializeinDatabase(this);
   }
   @override
@@ -41,14 +39,7 @@ class Purchase {
     );
   }
 
-  Future<List<Purchase>> getallPurchases() async {
-    final db = await database;
-    final List<Map<String, dynamic>> maps = await db!.query('Purchases');
-    return List.generate(maps.length, (i) {
-      return Purchase(maps[i]['amount'], maps[i]['purchase'],
-          maps[i]['purchasetype'], maps[i]['id']);
-    });
-  }
+ 
 
   Future<void> createTable() async {
     database = openDatabase(
@@ -62,3 +53,13 @@ class Purchase {
     );
   }
 }
+
+
+ Future<List<Purchase>> getallPurchases() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db!.query('Purchases');
+    return List.generate(maps.length, (i) {
+      return Purchase(maps[i]['amount'], maps[i]['purchase'],
+          maps[i]['purchasetype'], maps[i]['id']);
+    });
+  }

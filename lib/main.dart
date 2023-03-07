@@ -26,13 +26,16 @@ class _Home extends StatefulWidget {
   State<_Home> createState() => _HomeState();
 }
 
-int entry_count = 100;
+int entry_count = 0;
+List<entry> entry_list = [];
 
 class _HomeState extends State<_Home> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    TextEditingController _textEditingController = TextEditingController();
+    TextEditingController _textEditingController2 = TextEditingController();
     //double _currentSliderValue = 20;
     return MaterialApp(
       home: Scaffold(
@@ -44,50 +47,59 @@ class _HomeState extends State<_Home> {
               GestureDetector(
                   onTap: () => showDialog<String>(
                       context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                              title: const Text('New Entry'),
-                              actions: <Widget>[
-                                Center(
-                                    child: Container(
-                                  width: 700,
-                                  height: 500,
-                                  color: Color.fromARGB(0, 255, 255, 255),
-                                  child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              EdgeInsets.fromLTRB(0, 0, 0, 100),
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              labelText: 'Transaction Value',
-                                            ),
-                                          ),
+                      builder: (BuildContext context) =>
+                          AlertDialog(title: const Text('New Entry'), actions: <
+                              Widget>[
+                            Center(
+                                child: Container(
+                              width: 700,
+                              height: 500,
+                              color: Color.fromARGB(0, 255, 255, 255),
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 0, 0, 100),
+                                      child: TextField(
+                                        controller: _textEditingController,
+                                        decoration: InputDecoration(
+                                          labelText: 'Transaction Value',
                                         ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsets.fromLTRB(0, 0, 0, 100),
-                                          child: TextField(
-                                              decoration: InputDecoration(
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 0, 0, 100),
+                                      child: TextField(
+                                          controller: _textEditingController2,
+                                          decoration: InputDecoration(
                                             labelText: 'Type of transaction',
                                           )),
-                                        ),
-                                        GestureDetector(
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                color: Color.fromARGB(
-                                                    255, 43, 161, 0),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
-                                            width: 80,
-                                            height: 60,
-                                            child: Center(child: Text("Enter")),
-                                          ),
-                                        )
-                                      ]),
-                                ))
-                              ])),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        updateDatabase(
+                                            int.parse(
+                                                _textEditingController.text),
+                                            _textEditingController2.text,
+                                            "null");
+                                        updateview();
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color:
+                                                Color.fromARGB(255, 43, 161, 0),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20))),
+                                        width: 80,
+                                        height: 60,
+                                        child: Center(child: Text("Enter")),
+                                      ),
+                                    )
+                                  ]),
+                            ))
+                          ])),
                   child: Container(
                     height: 0,
                     width: 50,
@@ -109,7 +121,7 @@ class _HomeState extends State<_Home> {
                   itemCount: entry_count, // Replace with your data list length
                   itemBuilder: (BuildContext context, int index) {
                     // Replace with your widget for each item in the list
-                    return entry(height: 60, width: width, id: index);
+                    return entry_list[index];
                   },
                 )),
             GestureDetector(
@@ -195,4 +207,21 @@ void graphit(context) {
     context,
     MaterialPageRoute(builder: (context) => graphPage),
   );
+}
+
+void updateview() async {
+  List<Purchase> liste = await getallPurchases();
+  entry_count = liste.length;
+  for (int i = 0; i >= entry_count; i++) {
+    var f = entry(
+      height: 60,
+      width: 500,
+      id: liste[i].amount,
+    );
+    entry_list.add(f);
+  }
+}
+
+void updateDatabase(int n, String s1, String s2) async {
+  Purchase(n, s1, s2);
 }
