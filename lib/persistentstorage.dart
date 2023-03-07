@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 
-Database? database;
+late Future<Database> database;
 
 class Purchase {
   Random random = new Random();
@@ -42,10 +42,10 @@ class Purchase {
   }
 
   Future<void> createTable() async {
-    database = await openDatabase(
+    database = openDatabase(
       join(await getDatabasesPath(), 'purchasedatabase.db'),
-      onCreate: (db, version) {
-        return db.execute(
+      onCreate: (database, version) {
+        return database.execute(
           'CREATE TABLE Purchases(id INTEGER PRIMARY KEY, purchase TEXT, purchasetype TEXT, amount INTEGER)',
         );
       },
@@ -56,6 +56,7 @@ class Purchase {
 
 Future<List<Purchase>> getallPurchases() async {
   final db = await database;
+  assert(db != null);
   final List<Map<String, dynamic>> maps = await db!.query('Purchases');
   return List.generate(maps.length, (i) {
     return Purchase(maps[i]['amount'], maps[i]['purchase'],
