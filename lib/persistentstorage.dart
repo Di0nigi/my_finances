@@ -39,6 +39,7 @@ class Purchase {
       newpurchase.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    print("inserted $purchase");
   }
 
   Future<void> createTable() async {
