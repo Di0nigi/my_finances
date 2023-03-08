@@ -34,7 +34,7 @@ class Purchase {
 
   Future<void> initializeinDatabase(Purchase newpurchase) async {
     final db = await database;
-    await db!.insert(
+    await db.insert(
       'Purchases',
       newpurchase.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
@@ -58,7 +58,7 @@ class Purchase {
 Future<List<Purchase>> getallPurchases() async {
   final db = await database;
   assert(db != null);
-  final List<Map<String, dynamic>> maps = await db!.query('Purchases');
+  final List<Map<String, dynamic>> maps = await db.query('Purchases');
   return List.generate(maps.length, (i) {
     return Purchase(maps[i]['amount'], maps[i]['purchase'],
         maps[i]['purchasetype'], maps[i]['id']);
