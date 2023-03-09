@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
-import 'persistentstorage.dart';
+import 'persistentstoragenew.dart';
 import 'package:my_finances/graph.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 
+SharedPreferences? prefs;
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  database = openDatabase(
-    join(await getDatabasesPath(), 'purchasedatabase.db'),
-  );
-  runApp(Myapp());
+  prefs = await SharedPreferences.getInstance();
+  await prefs!.setStringList("allitems", <String>[]);
+  runApp(const Myapp());
 }
 
 class Myapp extends StatefulWidget {
@@ -222,7 +222,7 @@ void graphit(context) {
 }
 
 Future<void> updateview() async {
-  List<Purchase> liste = await getallPurchases();
+  List<Purchase> liste = getallPurchases();
   entry_count = liste.length + 1;
   for (int i = 0; i >= entry_count; i++) {
     var f = entry(
@@ -235,5 +235,6 @@ Future<void> updateview() async {
 }
 
 Future<void> updateDatabase(int n, String s1, String s2) async {
-  await Purchase(n, s1, s2);
+  Purchase k = Purchase(n, s1, s2);
+  await k.save();
 }
