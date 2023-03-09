@@ -17,7 +17,8 @@ class Purchase {
   }
   Future<void> save() async {
     final List<String>? items = prefs!.getStringList('allitems');
-    items!.add("${this.id} ${this.amount} ${this.purchase} ${this.purchasetype}");
+    items!
+        .add("${this.id} ${this.amount} ${this.purchase} ${this.purchasetype}");
     print("${this.id} ${this.amount} ${this.purchase} ${this.purchasetype}");
     await prefs!.setStringList("allitems", items);
   }
@@ -33,7 +34,7 @@ List<Purchase> getallPurchases() {
   var first = GetAll();
   for (String item in first) {
     List x = item.split(" ");
-    Purchase p = Purchase(x[1], x[2], x[3], x[0]);
+    Purchase p = Purchase(int.parse(x[1]), x[2], x[3], int.parse(x[0]));
     end.add(p);
   }
   return end;

@@ -1,4 +1,4 @@
-import 'package:my_finances/main.dart';
+/*import 'package:my_finances/main.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 import 'dart:async' as asy;
 import 'dart:math';
@@ -63,3 +63,4 @@ Future<sql.Database>? createTable() async {
   );
   return database;
 }
+*/

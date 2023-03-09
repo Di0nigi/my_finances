@@ -36,8 +36,9 @@ class _Home extends StatefulWidget {
   State<_Home> createState() => _HomeState();
 }
 
-int entry_count = 0;
-List<entry> entry_list = [entry(height: 0, width: 0, id: 0)];
+int entry_count = 1;
+List<entry> entry_list = [];
+Widget listView_ = updateview();
 
 class _HomeState extends State<_Home> {
   @override
@@ -94,7 +95,10 @@ class _HomeState extends State<_Home> {
                                                 _textEditingController.text),
                                             _textEditingController2.text,
                                             "null");
-                                        updateview();
+                                        setState(() {
+                                          listView_ = updateview();
+                                        });
+                                        Navigator.pop(context);
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
@@ -127,13 +131,7 @@ class _HomeState extends State<_Home> {
                 width: width,
                 height: height - 70 - 79.1,
                 color: Color.fromARGB(255, 0, 0, 0),
-                child: ListView.builder(
-                  itemCount: entry_count, // Replace with your data list length
-                  itemBuilder: (BuildContext context, int index) {
-                    // Replace with your widget for each item in the list
-                    return entry_list[index];
-                  },
-                )),
+                child: listView_),
             GestureDetector(
                 onTap: () {
                   graphit(context);
@@ -219,17 +217,42 @@ void graphit(context) {
   );
 }
 
-Future<void> updateview() async {
+Widget updateview() {
   List<Purchase> liste = getallPurchases();
-  entry_count = liste.length + 1;
-  for (int i = 0; i >= entry_count; i++) {
+
+  entry_count = liste.length;
+  print(entry_count);
+
+  for (int i = 0; i < entry_count; i++) {
+    print("trig");
     var f = entry(
       height: 60,
       width: 500,
       id: liste[i].amount,
     );
-    entry_list.add(f);
+    if (entry_list.length <= 0) {
+      entry_list.add(f);
+    } else {
+      int j = 0;
+      for (var elem in entry_list) {
+        if (elem.id != f.id) {
+          j++;
+        }
+      }
+      if (j == entry_list.length) {
+        entry_list.add(f);
+      }
+    }
   }
+  print(entry_list.length);
+  print(entry_list);
+  return ListView.builder(
+    itemCount: entry_list.length, // Replace with your data list length
+    itemBuilder: (BuildContext context, int index) {
+      //print(index);
+      return entry_list[index];
+    },
+  );
 }
 
 Future<void> updateDatabase(int n, String s1, String s2) async {
