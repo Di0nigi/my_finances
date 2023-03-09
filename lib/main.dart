@@ -90,11 +90,13 @@ class _HomeState extends State<_Home> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
+                                        DateTime dateTime = DateTime.now();
                                         updateDatabase(
                                             int.parse(
                                                 _textEditingController.text),
                                             _textEditingController2.text,
-                                            "null");
+                                            "null",
+                                            dateTime);
                                         setState(() {
                                           listView_ = updateview();
                                         });
@@ -165,9 +167,14 @@ Future<void> saveText(String filename, String text) async {
 class entry extends StatelessWidget {
   final double height;
   final double width;
-  final int id;
+  final int amount;
+  final int? id;
 
-  entry({required this.height, required this.width, required this.id});
+  entry(
+      {required this.height,
+      required this.width,
+      required this.amount,
+      required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -182,7 +189,7 @@ class entry extends StatelessWidget {
             width: width,
             child: Center(
               child: Text(
-                id.toString(),
+                amount.toString(),
                 style: TextStyle(
                   letterSpacing: 0,
                   fontSize: 20,
@@ -228,7 +235,8 @@ Widget updateview() {
     var f = entry(
       height: 60,
       width: 500,
-      id: liste[i].amount,
+      amount: liste[i].amount,
+      id: liste[i].id,
     );
     if (entry_list.length <= 0) {
       entry_list.add(f);
@@ -246,16 +254,18 @@ Widget updateview() {
   }
   print(entry_list.length);
   print(entry_list);
+  List<entry> reversedList = entry_list.reversed.toList();
   return ListView.builder(
     itemCount: entry_list.length, // Replace with your data list length
     itemBuilder: (BuildContext context, int index) {
       //print(index);
-      return entry_list[index];
+      return reversedList[index];
     },
   );
 }
 
-Future<void> updateDatabase(int n, String s1, String s2) async {
-  Purchase k = Purchase(n, s1, s2);
+Future<void> updateDatabase(
+    int n, String s1, String s2, DateTime period) async {
+  Purchase k = Purchase(n, s1, period, s2);
   await k.save();
 }

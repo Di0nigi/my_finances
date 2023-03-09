@@ -8,18 +8,21 @@ import 'main.dart';
 class Purchase {
   Random random = new Random();
   int? id;
+  final DateTime dateTime_;
   final int amount;
   final String purchase;
   String? purchasetype;
-  Purchase(this.amount, this.purchase, [this.purchasetype, this.id]) {
+  Purchase(this.amount, this.purchase, this.dateTime_,
+      [this.purchasetype, this.id]) {
     id ??= random.nextInt(100000);
     purchasetype ??= "potato";
   }
   Future<void> save() async {
     final List<String>? items = prefs!.getStringList('allitems');
-    items!
-        .add("${this.id} ${this.amount} ${this.purchase} ${this.purchasetype}");
-    print("${this.id} ${this.amount} ${this.purchase} ${this.purchasetype}");
+    String stringa =
+        "${this.id} ${this.amount} ${this.purchase} ${this.purchasetype} ${dateTostring(this.dateTime_)}";
+    items!.add(stringa);
+    print(stringa);
     await prefs!.setStringList("allitems", items);
   }
 }
@@ -34,8 +37,22 @@ List<Purchase> getallPurchases() {
   var first = GetAll();
   for (String item in first) {
     List x = item.split(" ");
-    Purchase p = Purchase(int.parse(x[1]), x[2], x[3], int.parse(x[0]));
+    Purchase p = Purchase(
+        int.parse(x[1]), x[2], stringTodate(x[4]), x[3], int.parse(x[0]));
     end.add(p);
   }
   return end;
+}
+
+String dateTostring(DateTime d) {
+  String s;
+  s = "${d.day}.${d.month}.${d.year}";
+  return s;
+}
+
+DateTime stringTodate(String s) {
+  DateTime date;
+  List<String> st = s.split(".");
+  date = DateTime(int.parse(st[2]), int.parse(st[1]), int.parse(st[0]));
+  return date;
 }
