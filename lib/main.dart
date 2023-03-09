@@ -12,6 +12,7 @@ import 'package:path/path.dart';
 
 SharedPreferences? prefs;
 void main() async {
+  WidgetsFlutterBinding();
   prefs = await SharedPreferences.getInstance();
   await prefs!.setStringList("allitems", <String>[]);
   runApp(const Myapp());
@@ -56,62 +57,59 @@ class _HomeState extends State<_Home> {
               GestureDetector(
                   onTap: () => showDialog<String>(
                       context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                              title: const Text('New Entry'),
-                              actions: <Widget>[
-                                Center(
-                                    child: Container(
-                                  width: 700,
-                                  height: 500,
-                                  color: Color.fromARGB(0, 255, 255, 255),
-                                  child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              EdgeInsets.fromLTRB(0, 0, 0, 100),
-                                          child: TextField(
-                                            controller: _textEditingController,
-                                            decoration: InputDecoration(
-                                              labelText: 'Transaction Value',
-                                            ),
-                                          ),
+                      builder: (BuildContext context) =>
+                          AlertDialog(title: const Text('New Entry'), actions: <
+                              Widget>[
+                            Center(
+                                child: Container(
+                              width: 700,
+                              height: 500,
+                              color: Color.fromARGB(0, 255, 255, 255),
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 0, 0, 100),
+                                      child: TextField(
+                                        controller: _textEditingController,
+                                        decoration: InputDecoration(
+                                          labelText: 'Transaction Value',
                                         ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsets.fromLTRB(0, 0, 0, 100),
-                                          child: TextField(
-                                              controller:
-                                                  _textEditingController2,
-                                              decoration: InputDecoration(
-                                                labelText:
-                                                    'Type of transaction',
-                                              )),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            updateDatabase(
-                                                int.parse(_textEditingController
-                                                    .text),
-                                                _textEditingController2.text,
-                                                "null");
-                                            updateview();
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                color: Color.fromARGB(
-                                                    255, 43, 161, 0),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
-                                            width: 80,
-                                            height: 60,
-                                            child: Center(child: Text("Enter")),
-                                          ),
-                                        )
-                                      ]),
-                                ))
-                              ])),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 0, 0, 100),
+                                      child: TextField(
+                                          controller: _textEditingController2,
+                                          decoration: InputDecoration(
+                                            labelText: 'Type of transaction',
+                                          )),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        updateDatabase(
+                                            int.parse(
+                                                _textEditingController.text),
+                                            _textEditingController2.text,
+                                            "null");
+                                        updateview();
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color:
+                                                Color.fromARGB(255, 43, 161, 0),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20))),
+                                        width: 80,
+                                        height: 60,
+                                        child: Center(child: Text("Enter")),
+                                      ),
+                                    )
+                                  ]),
+                            ))
+                          ])),
                   child: Container(
                     height: 0,
                     width: 50,

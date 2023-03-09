@@ -16,7 +16,9 @@ class Purchase {
   }
   Future<void> save() async {
     final List<String>? items = prefs!.getStringList('allitems');
-    items!.add("$this.id $this.amount $this.purchase $this.purchasetype");
+    items!
+        .add("${this.id} ${this.amount} ${this.purchase} ${this.purchasetype}");
+    print("${this.id} ${this.amount} ${this.purchase} ${this.purchasetype}");
     await prefs!.setStringList("allitems", items);
   }
 }
