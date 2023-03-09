@@ -9,6 +9,7 @@ import 'package:my_finances/graph.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
+import 'package:my_finances/entry.dart';
 
 SharedPreferences? prefs;
 void main() async {
@@ -73,6 +74,7 @@ class _HomeState extends State<_Home> {
                                       padding:
                                           EdgeInsets.fromLTRB(0, 0, 0, 100),
                                       child: TextField(
+                                        keyboardType: TextInputType.number,
                                         controller: _textEditingController,
                                         decoration: InputDecoration(
                                           labelText: 'Transaction Value',
@@ -162,43 +164,6 @@ Future<File> _getFile(String filename) async {
 Future<void> saveText(String filename, String text) async {
   final file = await _getFile(filename);
   await file.writeAsString(text);
-}
-
-class entry extends StatelessWidget {
-  final double height;
-  final double width;
-  final int amount;
-  final int? id;
-
-  entry(
-      {required this.height,
-      required this.width,
-      required this.amount,
-      required this.id});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-        child: Container(
-            decoration: BoxDecoration(
-                color: Color.fromARGB(255, 255, 255, 255),
-                borderRadius: BorderRadius.all(Radius.circular(15))),
-            //padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
-            height: height,
-            width: width,
-            child: Center(
-              child: Text(
-                amount.toString(),
-                style: TextStyle(
-                  letterSpacing: 0,
-                  fontSize: 20,
-                  color: Color.fromARGB(255, 0, 0, 0),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            )));
-  }
 }
 
 void graphit(context) {
