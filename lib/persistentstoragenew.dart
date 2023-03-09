@@ -19,6 +19,7 @@ class Purchase {
     items!
         .add("${this.id} ${this.amount} ${this.purchase} ${this.purchasetype}");
     print("${this.id} ${this.amount} ${this.purchase} ${this.purchasetype}");
+    print("your mom");
     await prefs!.setStringList("allitems", items);
   }
 }
