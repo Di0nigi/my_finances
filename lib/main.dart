@@ -40,6 +40,7 @@ class _Home extends StatefulWidget {
 int entry_count = 1;
 List<entry> entry_list = [];
 Widget listView_ = updateview();
+Widget last_used = Wlist.first;
 
 class _HomeState extends State<_Home> {
   @override
@@ -47,7 +48,12 @@ class _HomeState extends State<_Home> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     TextEditingController _textEditingController = TextEditingController();
+    _textEditingController.text = "";
     TextEditingController _textEditingController2 = TextEditingController();
+    _textEditingController2.text = "";
+    TextEditingController _textEditingController3 = TextEditingController();
+    _textEditingController3.text = "";
+
     //double _currentSliderValue = 20;
     return MaterialApp(
       home: Scaffold(
@@ -71,8 +77,7 @@ class _HomeState extends State<_Home> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(0, 0, 0, 100),
+                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 70),
                                       child: TextField(
                                         keyboardType: TextInputType.number,
                                         controller: _textEditingController,
@@ -82,14 +87,17 @@ class _HomeState extends State<_Home> {
                                       ),
                                     ),
                                     Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(0, 0, 0, 100),
+                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 70),
                                       child: TextField(
                                           controller: _textEditingController2,
                                           decoration: InputDecoration(
                                             labelText: 'Type of transaction',
                                           )),
                                     ),
+                                    Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(0, 0, 0, 100),
+                                        child: DropdownMenu_()),
                                     GestureDetector(
                                       onTap: () {
                                         DateTime dateTime = DateTime.now();
@@ -97,7 +105,7 @@ class _HomeState extends State<_Home> {
                                             int.parse(
                                                 _textEditingController.text),
                                             _textEditingController2.text,
-                                            "null",
+                                            _textEditingController3.text,
                                             dateTime);
                                         setState(() {
                                           listView_ = updateview();
@@ -152,6 +160,71 @@ class _HomeState extends State<_Home> {
         ),
       ),
     );
+  }
+}
+
+List<Widget> Wlist = <Widget>[];
+
+void createL(List<String> l) {
+  for (String s in l) {
+    Widget W = dropOption(s);
+
+    Wlist.add(W);
+  }
+}
+
+class DropdownMenu_ extends StatefulWidget {
+  const DropdownMenu_({super.key});
+
+  @override
+  State<DropdownMenu_> createState() => DropdownMenuState();
+}
+
+class DropdownMenuState extends State<DropdownMenu_> {
+  Widget dropdownValue = last_used;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        width: 500,
+        child: DropdownButton<Widget>(
+          value: dropdownValue,
+          //icon: const Icon(Icons.arrow_downward),
+          elevation: 0,
+          onChanged: (Widget? value) {
+            // This is called when the user selects an item.
+            setState(() {
+              dropdownValue = value!;
+            });
+          },
+          items: Wlist.map<DropdownMenuItem<Widget>>((Widget value) {
+            return DropdownMenuItem<Widget>(
+              value: value,
+              child: Text("eo"),
+            );
+          }).toList(),
+        ));
+  }
+}
+
+class dropOption extends StatelessWidget {
+  final String title;
+  // final Function() onTap;
+
+  dropOption(this.title);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      // onTap: onTap(),
+      child: Container(
+        child: Text(title),
+      ),
+    );
+  }
+
+  String select() {
+    return this.title;
   }
 }
 
