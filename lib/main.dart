@@ -10,6 +10,7 @@ import 'package:my_finances/entry.dart';
 
 SharedPreferences? prefs;
 void main() async {
+  createL(Slist);
   WidgetsFlutterBinding();
   prefs = await SharedPreferences.getInstance();
   if (!prefs!.containsKey("allitems")) {
@@ -39,7 +40,9 @@ class _Home extends StatefulWidget {
 int entry_count = 1;
 List<entry> entry_list = [];
 Widget listView_ = updateview();
-Widget last_used = Wlist.first;
+dropOption last_used = Wlist.first;
+String pusrchaseType = "";
+TextEditingController _textEditingController3 = TextEditingController();
 
 class _HomeState extends State<_Home> {
   @override
@@ -50,8 +53,7 @@ class _HomeState extends State<_Home> {
     _textEditingController.text = "";
     TextEditingController _textEditingController2 = TextEditingController();
     _textEditingController2.text = "";
-    TextEditingController _textEditingController3 = TextEditingController();
-    _textEditingController3.text = "";
+    //_textEditingController3.text = "";
 
     //double _currentSliderValue = 20;
     return MaterialApp(
@@ -64,72 +66,72 @@ class _HomeState extends State<_Home> {
               GestureDetector(
                   onTap: () => showDialog<String>(
                       context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                              title: const Text('New Entry'),
-                              actions: <Widget>[
-                                Center(
-                                    child: Container(
-                                  width: 700,
-                                  height: 500,
-                                  color: Color.fromARGB(0, 255, 255, 255),
-                                  child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              EdgeInsets.fromLTRB(0, 0, 0, 70),
-                                          child: TextField(
-                                            keyboardType: TextInputType.number,
-                                            controller: _textEditingController,
-                                            decoration: InputDecoration(
-                                              labelText: 'Transaction Value',
-                                            ),
-                                          ),
+                      builder: (BuildContext context) =>
+                          AlertDialog(title: const Text('New Entry'), actions: <
+                              Widget>[
+                            Center(
+                                child: Container(
+                              width: 700,
+                              height: 500,
+                              color: Color.fromARGB(0, 255, 255, 255),
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 70),
+                                      child: TextField(
+                                        keyboardType: TextInputType.number,
+                                        controller: _textEditingController,
+                                        decoration: InputDecoration(
+                                          labelText: 'Transaction Value',
                                         ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsets.fromLTRB(0, 0, 0, 70),
-                                          child: TextField(
-                                              controller:
-                                                  _textEditingController2,
-                                              decoration: InputDecoration(
-                                                labelText:
-                                                    'Type of transaction',
-                                              )),
-                                        ),
-                                        Padding(
-                                            padding: EdgeInsets.fromLTRB(
-                                                0, 0, 0, 100),
-                                            child: DropdownMenu_()),
-                                        GestureDetector(
-                                          onTap: () {
-                                            DateTime dateTime = DateTime.now();
-                                            updateDatabase(
-                                                int.parse(_textEditingController
-                                                    .text),
-                                                _textEditingController2.text,
-                                                _textEditingController3.text,
-                                                dateTime);
-                                            setState(() {
-                                              listView_ = updateview();
-                                            });
-                                            Navigator.pop(context);
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                color: Color.fromARGB(
-                                                    255, 43, 161, 0),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
-                                            width: 80,
-                                            height: 60,
-                                            child: Center(child: Text("Enter")),
-                                          ),
-                                        )
-                                      ]),
-                                ))
-                              ])),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 70),
+                                      child: TextField(
+                                          controller: _textEditingController2,
+                                          decoration: InputDecoration(
+                                            labelText: 'Type of transaction',
+                                          )),
+                                    ),
+                                    Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(0, 0, 0, 100),
+                                        child: DropdownMenu_()),
+                                    GestureDetector(
+                                      onTap: () {
+                                        DateTime dateTime = DateTime.now();
+                                        updateDatabase(
+                                            int.parse(
+                                                _textEditingController.text),
+                                            _textEditingController2.text,
+                                            pusrchaseType,
+                                            dateTime);
+                                        setState(() {
+                                          listView_ = updateview();
+                                        });
+                                        pusrchaseType =
+                                            _textEditingController3.text;
+                                        Slist.add(_textEditingController3.text);
+                                        createL(Slist);
+                                        _textEditingController3.text = "";
+                                        Navigator.pop(context);
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color:
+                                                Color.fromARGB(255, 43, 161, 0),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20))),
+                                        width: 80,
+                                        height: 60,
+                                        child: Center(child: Text("Enter")),
+                                      ),
+                                    )
+                                  ]),
+                            ))
+                          ])),
                   child: Container(
                     height: 0,
                     width: 50,
@@ -167,13 +169,24 @@ class _HomeState extends State<_Home> {
   }
 }
 
-List<Widget> Wlist = <Widget>[];
-
+List<dropOption> Wlist = <dropOption>[];
+List<String> Slist = <String>["food", "business"];
+Create_dropOption C = Create_dropOption();
 void createL(List<String> l) {
+  int count = 0;
   for (String s in l) {
-    Widget W = dropOption(s);
-
-    Wlist.add(W);
+    for (dropOption d in Wlist) {
+      if (d.title != s) {
+        count++;
+      }
+    }
+    if (count == Wlist.length) {
+      dropOption W = dropOption(s);
+      Wlist.add(W);
+    }
+  }
+  if (!Wlist.contains(C)) {
+    Wlist.add(C);
   }
 }
 
@@ -185,28 +198,63 @@ class DropdownMenu_ extends StatefulWidget {
 }
 
 class DropdownMenuState extends State<DropdownMenu_> {
-  Widget dropdownValue = last_used;
+  dropOption dropdownValue = last_used;
 
   @override
   Widget build(BuildContext context) {
     return Container(
         width: 500,
-        child: DropdownButton<Widget>(
+        child: DropdownButton<dropOption>(
           value: dropdownValue,
           //icon: const Icon(Icons.arrow_downward),
           elevation: 0,
-          onChanged: (Widget? value) {
+          onChanged: (dropOption? value) {
             // This is called when the user selects an item.
             setState(() {
               dropdownValue = value!;
             });
           },
-          items: Wlist.map<DropdownMenuItem<Widget>>((Widget value) {
-            return DropdownMenuItem<Widget>(
+          items: Wlist.map<DropdownMenuItem<dropOption>>((dropOption value) {
+            return DropdownMenuItem<dropOption>(
               value: value,
-              child: Text("eo"),
+              child: value,
             );
           }).toList(),
+        ));
+  }
+}
+
+bool _shouldShow = false;
+
+Widget show() {
+  if (_shouldShow == true) {
+    return TextField(
+        decoration: InputDecoration(
+      labelText: 'New type',
+    ));
+  } else {
+    return Container();
+  }
+}
+
+class Create_dropOption extends dropOption {
+  Create_dropOption() : super("Create +");
+
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        onTap: () {},
+        onDoubleTap: () {
+          /*pusrchaseType = _textEditingController3.text;
+          Slist.add(_textEditingController3.text);*/
+        },
+        child: Container(
+          height: 50,
+          width: 100,
+          child: TextField(
+              controller: _textEditingController3,
+              decoration: InputDecoration(
+                labelText: 'New type ',
+              )),
         ));
   }
 }
@@ -214,13 +262,14 @@ class DropdownMenuState extends State<DropdownMenu_> {
 class dropOption extends StatelessWidget {
   final String title;
   // final Function() onTap;
-
   dropOption(this.title);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // onTap: onTap(),
+      onTap: () {
+        pusrchaseType = this.title;
+      },
       child: Container(
         child: Text(title),
       ),

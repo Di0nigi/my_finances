@@ -26,7 +26,7 @@ class Purchase {
 }
 
 List<String> GetAll() {
-  final List<String>? items = prefs!.getStringList('allitems');
+  final List<String>? items =  prefs!.getStringList('allitems');
   return items!;
 }
 
