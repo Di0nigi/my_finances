@@ -113,8 +113,10 @@ class _HomeState extends State<_Home> {
                                         });
                                         pusrchaseType =
                                             _textEditingController3.text;
-                                        Slist.add(_textEditingController3.text);
+                                          if(_textEditingController3.text!=""){
+                                            Slist.add(_textEditingController3.text);
                                         createL(Slist);
+                                          }
                                         _textEditingController3.text = "";
                                         Navigator.pop(context);
                                       },
@@ -173,8 +175,8 @@ List<dropOption> Wlist = <dropOption>[];
 List<String> Slist = <String>["food", "business"];
 Create_dropOption C = Create_dropOption();
 void createL(List<String> l) {
-  int count = 0;
   for (String s in l) {
+    int count = 0;
     for (dropOption d in Wlist) {
       if (d.title != s) {
         count++;
@@ -185,9 +187,8 @@ void createL(List<String> l) {
       Wlist.add(W);
     }
   }
-  if (!Wlist.contains(C)) {
-    Wlist.add(C);
-  }
+  Wlist.remove(C);
+  Wlist.add(C);
 }
 
 class DropdownMenu_ extends StatefulWidget {
