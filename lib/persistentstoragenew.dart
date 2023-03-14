@@ -9,11 +9,10 @@ class Purchase {
   final DateTime dateTime_;
   final int amount;
   final String purchase;
-  String? purchasetype;
-  Purchase(this.amount, this.purchase, this.dateTime_,
-      [this.purchasetype, this.id]) {
+  final String purchasetype;
+  Purchase(this.amount, this.purchase, this.dateTime_,this.purchasetype,
+      [this.id]) {
     id ??= random.nextInt(100000);
-    purchasetype ??= "potato";
   }
   Future<void> save() async {
     final List<String>? items = prefs!.getStringList('allitems');

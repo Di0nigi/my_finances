@@ -83,7 +83,7 @@ class _HomeState extends State<_Home> {
                                         keyboardType: TextInputType.number,
                                         controller: _textEditingController,
                                         decoration: InputDecoration(
-                                          labelText: 'Transaction Value',
+                                          labelText: 'Amount',
                                         ),
                                       ),
                                     ),
@@ -92,7 +92,7 @@ class _HomeState extends State<_Home> {
                                       child: TextField(
                                           controller: _textEditingController2,
                                           decoration: InputDecoration(
-                                            labelText: 'Type of transaction',
+                                            labelText: 'Purchase',
                                           )),
                                     ),
                                     Padding(
@@ -102,6 +102,14 @@ class _HomeState extends State<_Home> {
                                     GestureDetector(
                                       onTap: () {
                                         DateTime dateTime = DateTime.now();
+                                        if (_textEditingController3.text !=
+                                            "") {
+                                          Slist.add(
+                                              _textEditingController3.text);
+                                          createL(Slist);
+                                        }
+                                        pusrchaseType =
+                                            _textEditingController3.text;
                                         updateDatabase(
                                             int.parse(
                                                 _textEditingController.text),
@@ -111,12 +119,6 @@ class _HomeState extends State<_Home> {
                                         setState(() {
                                           listView_ = updateview();
                                         });
-                                        pusrchaseType =
-                                            _textEditingController3.text;
-                                          if(_textEditingController3.text!=""){
-                                            Slist.add(_textEditingController3.text);
-                                        createL(Slist);
-                                          }
                                         _textEditingController3.text = "";
                                         Navigator.pop(context);
                                       },
@@ -329,6 +331,9 @@ Widget updateview() {
       width: 500,
       amount: liste[i].amount,
       id: liste[i].id,
+      purchase: liste[i].purchase,
+      purchasetype: liste[i].purchasetype,
+      date: dateTostring(liste[i].dateTime_),
     );
     if (entry_list.length <= 0) {
       entry_list.add(f);
