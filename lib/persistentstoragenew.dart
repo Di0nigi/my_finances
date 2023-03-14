@@ -10,7 +10,7 @@ class Purchase {
   final int amount;
   final String purchase;
   final String purchasetype;
-  Purchase(this.amount, this.purchase, this.dateTime_,this.purchasetype,
+  Purchase(this.amount, this.purchase, this.dateTime_, this.purchasetype,
       [this.id]) {
     id ??= random.nextInt(100000);
   }
@@ -25,7 +25,7 @@ class Purchase {
 }
 
 List<String> GetAll() {
-  final List<String>? items =  prefs!.getStringList('allitems');
+  final List<String>? items = prefs!.getStringList('allitems');
   return items!;
 }
 
@@ -52,4 +52,31 @@ DateTime stringTodate(String s) {
   List<String> st = s.split(".");
   date = DateTime(int.parse(st[2]), int.parse(st[1]), int.parse(st[0]));
   return date;
+}
+
+Future<void> Datasave(String Sl) async {
+  String stringe = "";
+  final List<String>? Typesitems = prefsT!.getStringList('Purchasetypes');
+
+
+  stringe += "${Sl} ";
+  
+  Typesitems!.add(stringe);
+  print(stringe);
+  await prefsT!.setStringList('Purchasetypes', Typesitems);
+}
+
+List<String> GetAllp() {
+  final List<String>? items = prefsT!.getStringList('Purchasetypes');
+  return items!;
+}
+
+List<String> getallPurchasesTypes() {
+  List<String> types = [];
+  var first = GetAllp();
+  for (String item in first) {
+    types.add(item);
+  }
+
+  return types;
 }

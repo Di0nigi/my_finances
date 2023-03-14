@@ -9,13 +9,21 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:my_finances/entry.dart';
 
 SharedPreferences? prefs;
+SharedPreferences? prefsT;
 void main() async {
-  createL(Slist);
   WidgetsFlutterBinding();
   prefs = await SharedPreferences.getInstance();
   if (!prefs!.containsKey("allitems")) {
     await prefs!.setStringList("allitems", <String>[]);
   }
+  //prefs?.clear();
+  prefsT = await SharedPreferences.getInstance();
+  if (!prefsT!.containsKey("Purchasetypes")) {
+    await prefsT!.setStringList("Purchasetypes", <String>[]);
+  }
+  //prefsT?.clear();
+  Slist = getallPurchasesTypes();
+  createL(Slist);
   runApp(const Myapp());
 }
 
@@ -106,6 +114,8 @@ class _HomeState extends State<_Home> {
                                             "") {
                                           Slist.add(
                                               _textEditingController3.text);
+                                          Datasave(
+                                              _textEditingController3.text);
                                           createL(Slist);
                                         }
                                         pusrchaseType =
@@ -175,6 +185,7 @@ class _HomeState extends State<_Home> {
 
 List<dropOption> Wlist = <dropOption>[];
 List<String> Slist = <String>["food", "business"];
+
 Create_dropOption C = Create_dropOption();
 void createL(List<String> l) {
   for (String s in l) {
