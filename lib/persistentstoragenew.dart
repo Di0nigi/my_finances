@@ -24,6 +24,24 @@ class Purchase {
   }
 }
 
+Future<bool> delete(int id) async {
+  bool worked = false;
+  final List<String>? items = prefs!.getStringList('allitems');
+  for (int i = 0; i < items!.length - 1; i++) {
+    String Item = items[i];
+    if (Item.split(" ")[0] == id.toString()) {
+      print(Item.split(" ")[0]);
+      worked = true;
+      items.removeAt(i);
+      break;
+    }
+  }
+  if (worked) {
+    await prefs!.setStringList("allitems", items);
+  }
+  return worked;
+}
+
 List<String> GetAll() {
   final List<String>? items = prefs!.getStringList('allitems');
   return items!;
@@ -58,9 +76,8 @@ Future<void> Datasave(String Sl) async {
   String stringe = "";
   final List<String>? Typesitems = prefsT!.getStringList('Purchasetypes');
 
-
   stringe += "${Sl} ";
-  
+
   Typesitems!.add(stringe);
   print(stringe);
   await prefsT!.setStringList('Purchasetypes', Typesitems);
