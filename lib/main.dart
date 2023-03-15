@@ -295,33 +295,8 @@ class dropOption extends StatelessWidget {
   }
 }
 
-Future<File> _getFile(String filename) async {
-  final directory = await getApplicationDocumentsDirectory();
-  final path = directory.path;
-  return File('$path/$filename');
-}
-
-Future<void> saveText(String filename, String text) async {
-  final file = await _getFile(filename);
-  await file.writeAsString(text);
-}
-
 void graphit(context) {
-  List<FlSpot> dataList = [
-    FlSpot(0, 4),
-    FlSpot(1, 3.5),
-    FlSpot(2, 4.5),
-    FlSpot(3, 1),
-    FlSpot(4, 4),
-    FlSpot(5, 6),
-    FlSpot(6, 6.5),
-    FlSpot(7, 6),
-    FlSpot(8, 4),
-    FlSpot(9, 6),
-    FlSpot(10, 6),
-    FlSpot(11, 7),
-  ];
-
+  List<Purchase> dataList = getallPurchases();
   Widget graphPage = Graph(data: dataList);
   Navigator.push(
     context,
