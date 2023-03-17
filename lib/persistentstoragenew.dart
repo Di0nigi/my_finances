@@ -27,7 +27,7 @@ class Purchase {
 Future<bool> delete(int? id) async {
   bool worked = false;
   final List<String>? items = prefs!.getStringList('allitems');
-  for (int i = 0; i < items!.length - 1; i++) {
+  for (int i = 0; i < items!.length; i++) {
     String Item = items[i];
     if (Item.split(" ")[0] == id.toString()) {
       print(Item.split(" ")[0]);
