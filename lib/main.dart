@@ -306,6 +306,8 @@ void graphit(context) {
 
 Widget updateview() {
   List<Purchase> liste = getallPurchases();
+  List<entry> El = [];
+  entry_list = [];
 
   entry_count = liste.length;
   print(entry_count);
@@ -321,25 +323,25 @@ Widget updateview() {
       purchasetype: liste[i].purchasetype,
       date: dateTostring(liste[i].dateTime_),
     );
-    if (entry_list.length <= 0) {
-      entry_list.add(f);
+    if (El.length <= 0) {
+      El.add(f);
     } else {
       int j = 0;
-      for (var elem in entry_list) {
+      for (var elem in El) {
         if (elem.id != f.id) {
           j++;
         }
       }
-      if (j == entry_list.length) {
-        entry_list.add(f);
+      if (j == El.length) {
+        El.add(f);
       }
     }
   }
-  print(entry_list.length);
-  print(entry_list);
-  List<entry> reversedList = entry_list.reversed.toList();
+  print(El.length);
+  print(El);
+  List<entry> reversedList = El.reversed.toList();
   return ListView.builder(
-    itemCount: entry_list.length, // Replace with your data list length
+    itemCount: El.length, // Replace with your data list length
     itemBuilder: (BuildContext context, int index) {
       //print(index);
       return reversedList[index];

@@ -24,7 +24,7 @@ class Purchase {
   }
 }
 
-Future<bool> delete(int id) async {
+Future<bool> delete(int? id) async {
   bool worked = false;
   final List<String>? items = prefs!.getStringList('allitems');
   for (int i = 0; i < items!.length - 1; i++) {
