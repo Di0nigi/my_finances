@@ -118,7 +118,7 @@ class entry extends StatelessWidget {
                                           onDoubleTap: () {
                                             delete(this.id);
                                             print("done");
-                                            updateview();
+                                            global();
                                             Navigator.pop(context);
                                           },
                                           child: Container(

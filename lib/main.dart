@@ -10,6 +10,7 @@ import 'package:my_finances/entry.dart';
 
 SharedPreferences? prefs;
 SharedPreferences? prefsT;
+Function() global = () {};
 void main() async {
   WidgetsFlutterBinding();
   prefs = await SharedPreferences.getInstance();
@@ -62,6 +63,12 @@ class _HomeState extends State<_Home> {
     TextEditingController _textEditingController2 = TextEditingController();
     _textEditingController2.text = "";
     //_textEditingController3.text = "";
+    global = () {
+      setState(() {
+        print("DOING");
+        listView_ = updateview();
+      });
+    };
 
     //double _currentSliderValue = 20;
     return MaterialApp(
